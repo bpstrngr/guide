@@ -8,10 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
@@ -30,7 +30,7 @@ public class Browser extends Application {
     public static VBox history = new VBox();
     public static ScrollPane conversation = new ScrollPane(history);
     public static HBox console = new HBox();
-    public static VBox layout = new VBox();
+    public static BorderPane layout = new BorderPane();
     public Client client = Client.session;
 
     public Browser(){
@@ -47,7 +47,9 @@ public class Browser extends Application {
 
     private void drawUI(){
         TextField field = new TextField();
+        field.setMinHeight(40.0);
         field.setPromptText("write here");
+        field.setStyle("-fx-focus-color:transparent;-fx-background-color:#ffffff;");
         Button button = new Button();
         Double radius = 20.0;
         Group svg = new Group(drawSVG("M50 -8 L-7 -3 L5 7 Z"),drawSVG("M50 -8 L33 9 L6 8 Z"));
@@ -66,17 +68,29 @@ public class Browser extends Application {
             field.setText("");
         });
         bubble(client.contact(null),Pos.CENTER_LEFT);
-        history.setFillWidth(false);
-        conversation.setMinHeight(300.0);
         conversation.setFitToHeight(true);
+        history.setStyle("-fx-background-color:#ffffff");
+        conversation.setStyle("-fx-focus-color:transparent;-fx-background-color:#ffffff;");
+        conversation.setMaxHeight(500.0);
+        conversation.setFitToHeight(true);
+        conversation.setFitToWidth(true);
         conversation.addEventFilter(ScrollEvent.SCROLL,event->{
                 if (event.getDeltaX() != 0){
                     event.consume();
             }
         });
+        console.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                button.fire();
+                event.consume();
+            }
+        });
         console.setAlignment(Pos.BOTTOM_CENTER);
+        HBox.setHgrow(field, Priority.ALWAYS);
         console.getChildren().addAll(field, button);
-        layout.getChildren().addAll(conversation, console);
+        layout.setCenter(conversation);
+        layout.setBottom(console);
+        layout.setStyle("-fx-background-color:#ffffff");
     }
 
     @Override
@@ -95,12 +109,12 @@ public class Browser extends Application {
     public void bubble(String message, Pos position){
         Client.log.info("inserting message...");
         Label label = new Label(message);
+        label.setStyle("-fx-shape: \"M0 0 L0 10 L10 10 L0 10 Z\";-fx-background-color: grey;");
         label.setWrapText(true);
         label.setFont(new Font("Courier",10));
         label.setMaxWidth(Double.MAX_VALUE);
         label.setAlignment(position);
         history.getChildren().add(label);
-        stage.sizeToScene();
     }
 }
 
