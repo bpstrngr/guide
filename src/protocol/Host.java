@@ -2,6 +2,7 @@ package protocol;
 
 import java.io.*;
 import java.net.*;
+import java.util.Deque;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -16,6 +17,7 @@ public class Host {
     private static PrintWriter outgoing;
     private static BufferedReader incoming;
     private static String request, response;
+    private static Deque<String> requests;
     private static Protocol protocol = new Protocol();
 
     /**
@@ -34,7 +36,7 @@ public class Host {
         }
         log.info("service started");
 
-        while(request!="Bye!" || response!="Bye!") {
+        while(request != "Bye!" || response != "Bye!") {
             communicate();
         }
 
@@ -53,6 +55,7 @@ public class Host {
             response = protocol.processRequest(null);
             outgoing.println(response);
         } else if ((request = incoming.readLine()) != null) {
+            //requests.offer(response);
             log.info("message received");
             response = protocol.processRequest(request);
             outgoing.println(response);

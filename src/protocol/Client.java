@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Deque;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +22,7 @@ public class Client {
     public static String host;
     public static PrintWriter outgoing;
     public static BufferedReader incoming;
+    private static Deque<String> responses;
     public Browser browser;
 
     public static Client session = new Client();
@@ -50,12 +52,12 @@ public class Client {
         }
         log.info("connection established");
 
-        //console()
+        //terminal()
         Application.launch(Browser.class);
         log.info("interface provided");
     }
 
-    private String console() throws IOException {
+    private String terminal() throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String request = input.readLine();
         return contact(request);
@@ -72,10 +74,15 @@ public class Client {
         return listen();
     }
 
+    /**
+     * Streaming responses, to be separated from displaying stream on deque.
+     * @return boolean wether response arrived. Or yet, the string itself.
+     */
     private String listen() {
         String response = null;
         try {
             response = incoming.readLine();
+            //responses.offer(response);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,6 +90,7 @@ public class Client {
             System.out.println(response);
             log.info("message received");
         }
+        //return responses.poll();
         return response;
     }
 }

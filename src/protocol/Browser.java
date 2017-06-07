@@ -2,6 +2,7 @@ package protocol;
 
 import java.io.*;
 import java.net.*;
+import java.util.Stack;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -32,6 +33,7 @@ public class Browser extends Application {
     public static HBox console = new HBox();
     public static BorderPane layout = new BorderPane();
     public Client client = Client.session;
+    public static Stack requests;
 
     public Browser(){
         log.info("interface instantiated");
@@ -60,14 +62,20 @@ public class Browser extends Application {
         button.setMaxSize(radius*2,radius*2);
         button.setMinSize(radius*2,radius*2);
         button.setOnAction(event -> {
+            if(field.getText() == ""){
+                event.consume();
+            };
             log.info("sending request...");
-            bubble(field.getText(),Pos.CENTER_RIGHT);
+            bubble(field.getText(),Pos.CENTER_RIGHT,"#00bcd4","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
             String request = field.getText();
+            try{requests.push(request);}catch(Exception e){e.printStackTrace();};
+            log.info("recieving response...");
             String response = client.contact(request);
-            bubble(response,Pos.CENTER_LEFT);
+            bubble(response,Pos.CENTER_LEFT,"D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
             field.setText("");
+            field.requestFocus();
         });
-        bubble(client.contact(null),Pos.CENTER_LEFT);
+        bubble(client.contact(null),Pos.CENTER_LEFT,"#D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
         conversation.setFitToHeight(true);
         history.setStyle("-fx-background-color:#ffffff");
         conversation.setStyle("-fx-focus-color:transparent;-fx-background-color:#ffffff;");
@@ -106,15 +114,17 @@ public class Browser extends Application {
         stage.show();
     }
 
-    public void bubble(String message, Pos position){
+    public void bubble(String message, Pos position, String color,String shape){
         Client.log.info("inserting message...");
+        VBox record = new VBox();
         Label label = new Label(message);
-        label.setStyle("-fx-shape: \"M0 0 L0 10 L10 10 L0 10 Z\";-fx-background-color: grey;");
+        label.setStyle("    -fx-shape: \""+shape+"\";-fx-background-color: transparent,"+color+";-fx-background-insets: 0,1;-fx-padding: 5;");
         label.setWrapText(true);
         label.setFont(new Font("Courier",10));
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setAlignment(position);
-        history.getChildren().add(label);
+        record.setMaxWidth(Double.MAX_VALUE);
+        record.setAlignment(position);
+        record.getChildren().add(label);
+        history.getChildren().add(record);
     }
 }
 

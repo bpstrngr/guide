@@ -32,7 +32,7 @@ class Protocol {
     }
 
     /**
-     * Conditions
+     * Response conditions
      * */
     public enum State {
         VOCATIVE("Knock-knock!", null),
@@ -65,6 +65,9 @@ class Protocol {
         if (state.ignorecase == null || request.equalsIgnoreCase(state.ignorecase)) {
             response = state.diction;
             state = state.next();
+            if(state.ignorecase == null){
+                processRequest(null);
+            }
         } else {
             response = "You're supposed to say \"" + state.ignorecase + "\"! I'll start over.";
             state = State.VOCATIVE;
