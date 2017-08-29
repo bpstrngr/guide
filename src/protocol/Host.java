@@ -20,10 +20,6 @@ public class Host {
     private static Deque<String> requests;
     private static Protocol protocol = new Protocol();
 
-    /**
-     * Primary.
-     * Prone to {@link IOException}.
-     * */
     public static void main(String[] args) throws IOException {
         try {
             serverSocket = new ServerSocket(4444);
@@ -35,31 +31,25 @@ public class Host {
             System.exit(1);
         }
         log.info("service started");
-
         while(request != "Bye!" || response != "Bye!") {
             communicate();
         }
-
         outgoing.close();
         incoming.close();
         clientSocket.close();
         serverSocket.close();
     }
 
-    /**
-     *
-     * @throws IOException
-     */
     public static void communicate() throws IOException {
         if (protocol.state.ignorecase == null) {
             response = protocol.processRequest(null);
             outgoing.println(response);
         } else if ((request = incoming.readLine()) != null) {
             //requests.offer(response);
-            log.info("message received");
+            log.info("message received: "+request);
             response = protocol.processRequest(request);
             outgoing.println(response);
-            log.info("response sent");
+            log.info("response sent: "+ response);
         }
     }
 }

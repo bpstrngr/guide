@@ -76,7 +76,7 @@ public class Client {
 
     /**
      * Streaming responses, to be separated from displaying stream on deque.
-     * @return boolean wether response arrived. Or yet, the string itself.
+     * @return boolean whether response arrived. Or yet, the string itself.
      */
     private String listen() {
         String response = null;

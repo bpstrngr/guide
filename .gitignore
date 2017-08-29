@@ -66,6 +66,9 @@ fabric.properties
 ### Java ###
 # Compiled class file
 *.class
+/bin/
+/jar/
+/build/
 
 # Log file
 *.log
@@ -77,7 +80,6 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
