@@ -68,6 +68,9 @@ fabric.properties
 *.class
 *.jar
 *.apk
+# Build results
+/.gradle/
+/build/
 
 # Log file
 *.log

@@ -1,7 +1,10 @@
-# Hitchhiker's Guide
+# The Hitchhiker's Guide
 
-Android client  app under src/app/.
+Android client app under src/main/.
 `gradle.build` for local gradle compiling, `gradlew` wrapper for remote. 
 
-the rest is standard java, run 
-javac -d bin src/protocol/*.java && java -cp bin protocol/Host.java
+Standard java tcp host and client with javafx in src/protocol, run 
+`javac -d bin src/protocol/*.java && java -cp bin protocol/Host` to host, or `.../Client` 
+to 
+peer. 
+
