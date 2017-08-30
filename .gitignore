@@ -71,6 +71,11 @@ fabric.properties
 # Build results
 /.gradle/
 /build/
+/target/
+/gradle/
+/.gradle/
+gradlew
+gradlew.bat
 
 # Log file
 *.log
