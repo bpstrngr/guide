@@ -1,3 +1,7 @@
-# Freestyle project
+# Hitchhiker's Guide
 
-Java SE: 4th TW week's freestyle project
+Android client  app under src/app/.
+`gradle.build` for local gradle compiling, `gradlew` wrapper for remote. 
+
+the rest is standard java, run 
+javac -d bin src/protocol/*.java && java -cp bin protocol/Host.java

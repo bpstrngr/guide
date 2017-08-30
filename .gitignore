@@ -66,9 +66,8 @@ fabric.properties
 ### Java ###
 # Compiled class file
 *.class
-/bin/
-/jar/
-/build/
+*.jar
+*.apk
 
 # Log file
 *.log
