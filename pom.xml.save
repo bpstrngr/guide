@@ -11,24 +11,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <android.platform>26</android.platform>
     </properties>
-    <repositories>
-        <repository>
-            <id>android-repository</id>
-            <url>file://${env.ANDROID_HOME}extras/android/m2repository</url>
-        </repository>
-
-        <repository>
-            <id>sdk-repository</id>
-            <url>file://${env.ANDROID_HOME}extras/m2repository</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>${android.platform}</version>
             <scope>system</scope>
-            <systemPath>${env.ANDROID_HOME}platforms/android-${android.platform}/android.jar</systemPath>
+            <systemPath>${env.ANDROID_HOME}/platforms/android-${android.platform}/android.jar</systemPath>
         </dependency>
 <!--    <dependency>
             <groupId>com.google.android</groupId>
@@ -42,25 +31,18 @@
             <version>2.3</version>
         </dependency>
         <dependency>
-            <groupId>com.android.support</groupId>
-            <artifactId>appcompat-v7</artifactId>
-            <version>25.3.1</version>
-            <type>aar</type>
-        </dependency>
-        <dependency>
             <groupId>com.android.support.constraint</groupId>
             <artifactId>constraint-layout-solver</artifactId>
             <version>1.0.2</version>
             <scope>system</scope>
-            <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar</systemPath>
+            <systemPath>${env.ANDROID_HOME}/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.android.support.constraint</groupId>
             <artifactId>constraint-layout</artifactId>
             <version>1.0.2</version>
             <scope>system</scope>
-            <type>aar</type>
-            <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
+            <systemPath>${env.ANDROID_HOME}/extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
         </dependency>
     </dependencies>
     <build>
@@ -68,7 +50,7 @@
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>4.5.0</version>
+                <version>4.1.1</version>
                 <configuration>
                     <sdk>
                         <platform>26</platform>
@@ -77,22 +59,14 @@
                     <androidManifestFile>${basedir}/src/main/AndroidManifest.xml</androidManifestFile>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    <artifactSet>
-                        <includes>
-    <include>com.android.support:appcompat-v7</include>
-    <include>com.android.support:animated-vector-drawable</include>
-    <include>com.android.support:support-annotations</include>
-    <include>com.android.support:support-compat</include>
-    <include>com.android.support:support-core-ui</include>
-    <include>com.android.support:support-core-utils</include>
-    <include>com.android.support:support-fragment</include>
-    <include>com.android.support:support-media-compat</include>
-    <include>com.android.support:support-v4</include>
-    <include>com.android.support:support-vector-drawable</include>
-    <include>com.android.support.constraint:constraint-layout</include>
-    <include>com.android.support.constraint:constraint-layout-solver</include>
-                        </includes>
-                    </artifactSet>
+
+
+
+
+
+
+
+
                 </configuration>
                 <extensions>true</extensions>
             </plugin>
