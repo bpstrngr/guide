@@ -9,18 +9,40 @@
         <!-- use UTF-8 for everything -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <android.platform>26</android.platform>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
+            <version>${android.platform}</version>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}/platforms/android-${android.platform}/android.jar</systemPath>
+        </dependency>
+<!--    <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
             <version>4.1.1.4</version>
             <scope>provided</scope>
-        </dependency> 
-        <dependency>
+        </dependency>    
+-->     <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.constraint</groupId>
+            <artifactId>constraint-layout-solver</artifactId>
+            <version>1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support.constraint</groupId>
+            <artifactId>constraint-layout</artifactId>
+            <version>1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}/extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
         </dependency>
     </dependencies>
     <build>
@@ -33,6 +55,8 @@
                     <sdk>
                         <platform>26</platform>
                     </sdk>
+                    <resourceDirectory>${basedir}/src/main/res</resourceDirectory>
+                    <androidManifestFile>${basedir}/src/main/AndroidManifest.xml</androidManifestFile>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>
