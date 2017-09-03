@@ -75,6 +75,7 @@
                     </sdk>
                     <resourceDirectory>${basedir}/src/main/res</resourceDirectory>
                     <androidManifestFile>${basedir}/src/main/AndroidManifest.xml</androidManifestFile>
+                    <includeLibsJarsFromAar>true</includeLibsJarsFromAar>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <artifactSet>
