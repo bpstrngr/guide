@@ -23,11 +23,16 @@
             <url>file://${env.ANDROID_HOME}extras/m2repository</url>
         </repository>
         <repository>
+            <id>android-support</id>
+            <name>android-support</name>
+            <url>file://${env.ANDROID_HOME}extras/android/m2repository</url>
+        </repository>
+<!--    <repository>
             <id>project.local2</id>
             <name>LocalSdkGoogleRepository</name>
             <url>file:${env.ANDROID_HOME}extras/google/m2repository</url>
         </repository>
-        <repository>
+-->     <repository>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -60,21 +65,22 @@
             <groupId>com.android.support.constraint</groupId>
             <artifactId>constraint-layout-solver</artifactId>
             <version>1.0.2</version>
-            <type>jar</type>
-<!--        <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar</systemPath>
--->     </dependency>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>com.android.support.constraint</groupId>
             <artifactId>constraint-layout</artifactId>
             <version>1.0.2</version>
+            <scope>system</scope>
             <type>aar</type>
-<!--        <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
--->     </dependency>
+            <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
-<!--    <sourceDirectory>src/main/java</sourceDirectory>
--->     <plugins>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
