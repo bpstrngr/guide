@@ -5,31 +5,51 @@
     <artifactId>guide</artifactId>
     <version>0.1.0</version>
     <packaging>apk</packaging>
+
     <properties>
         <!-- use UTF-8 for everything -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <android.platform>26</android.platform>
     </properties>
+
     <repositories>
         <repository>
             <id>android-repository</id>
             <url>file://${env.ANDROID_HOME}extras/android/m2repository</url>
         </repository>
-
         <repository>
             <id>sdk-repository</id>
             <url>file://${env.ANDROID_HOME}extras/m2repository</url>
         </repository>
+        <repository>
+            <id>android-support</id>
+            <name>android-support</name>
+            <url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+        </repository>
+        <repository>
+            <id>project.local2</id>
+            <name>LocalSdkGoogleRepository</name>
+            <url>file:${env.ANDROID_HOME}/extras/google/m2repository</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray</name>
+            <url>http://jcenter.bintray.com</url> 
+        </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>${android.platform}</version>
-            <scope>system</scope>
-            <systemPath>${env.ANDROID_HOME}platforms/android-${android.platform}/android.jar</systemPath>
-        </dependency>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+<!--        <systemPath>${env.ANDROID_HOME}platforms/android-${android.platform}/android.jar</systemPath>
+-->     </dependency>
 <!--    <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
@@ -63,7 +83,9 @@
             <systemPath>${env.ANDROID_HOME}extras/m2repository/com/android/support/constraint/constraint-layout/1.0.2/constraint-layout-1.0.2.aar</systemPath>
         </dependency>
     </dependencies>
+
     <build>
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
@@ -80,18 +102,18 @@
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <artifactSet>
                         <includes>
-    <include>com.android.support:appcompat-v7</include>
-    <include>com.android.support:animated-vector-drawable</include>
-    <include>com.android.support:support-annotations</include>
-    <include>com.android.support:support-compat</include>
-    <include>com.android.support:support-core-ui</include>
-    <include>com.android.support:support-core-utils</include>
-    <include>com.android.support:support-fragment</include>
-    <include>com.android.support:support-media-compat</include>
-    <include>com.android.support:support-v4</include>
-    <include>com.android.support:support-vector-drawable</include>
-    <include>com.android.support.constraint:constraint-layout</include>
-    <include>com.android.support.constraint:constraint-layout-solver</include>
+                            <include>com.android.support:appcompat-v7</include>
+                            <include>com.android.support:animated-vector-drawable</include>
+                            <include>com.android.support:support-annotations</include>
+                            <include>com.android.support:support-compat</include>
+                            <include>com.android.support:support-core-ui</include>
+                            <include>com.android.support:support-core-utils</include>
+                            <include>com.android.support:support-fragment</include>
+                            <include>com.android.support:support-media-compat</include>
+                            <include>com.android.support:support-v4</include>
+                            <include>com.android.support:support-vector-drawable</include>
+                            <include>com.android.support.constraint:constraint-layout</include>
+                            <include>com.android.support.constraint:constraint-layout-solver</include>
                         </includes>
                     </artifactSet>
                 </configuration>
