@@ -6,9 +6,6 @@ import java.util.Deque;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-/**
- * TCP service routine
- * */
 public class Host {
     public static final Logger log = Logger.getLogger(Host.class.getName());
 
@@ -44,12 +41,10 @@ public class Host {
         if (protocol.state.ignorecase == null) {
             response = protocol.processRequest(null);
             outgoing.println(response);
-        } else if ((request = incoming.readLine()) != null) {
+        } else if ((request = incoming.readLine()) != null) { log.info("message received: "+request);
             //requests.offer(response);
-            log.info("message received: "+request);
             response = protocol.processRequest(request);
-            outgoing.println(response);
-            log.info("response sent: "+ response);
+            outgoing.println(response); log.info("response sent: "+ response);
         }
     }
 }

@@ -14,7 +14,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 26
     }
 }
@@ -27,6 +27,7 @@ repositories {
 dependencies {
     compile 'joda-time:joda-time:2.7'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
 }
 
 task wrapper(type: Wrapper) {

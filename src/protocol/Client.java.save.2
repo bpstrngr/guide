@@ -21,19 +21,17 @@ public class Client implements Runnable {
     public static PrintWriter outgoing;
     public static BufferedReader incoming;
     private static Deque<String> responses;
-    public static Thread thread;
-    public static Client client;
-    public Browser browser;
-    //public static Application browser;
+    public static  session;
+    public static Application browser;
 
     public Client(BufferedReader incoming, PrintWriter outgoing){
         //terminal()
         this.incoming=incoming;
         this.outgoing=outgoing;
-        client = this;
-        thread = new Thread(this);
-        thread.start(); log.info("thread started listening");
-        Application.launch(Browser.class); log.info("interface provided");
+        session = new Thread(this);
+        session.start(); log.info("thread listening");
+        this.browser = new Application();
+        browser.launch(Browser.class); log.info("interface provided");
     }
 
     public static void main(String[] args) throws IOException {
@@ -50,25 +48,24 @@ public class Client implements Runnable {
         } log.info("connection established");
     }
 
-    public void run() {
-        String response = null;
-        try {
-            while(true) {
-                response = incoming.readLine();
-                //responses.offer(response);
-                if (response != null) log.info("message received: " + response);
-                browser.bubble(response,true);
-            }
-        } catch (IOException e) {e.printStackTrace();};
-        //return responses.poll();
-    }
-
 /*  private String terminal() throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String request = input.readLine();
         return contact(request);
     }
 */
+    private void run() {
+        String response = null;
+        try {
+            while(true) {
+                response = incoming.readLine();
+                //responses.offer(response);
+                if (response != null) log.info("message received: " + response);
+            }
+        } catch (IOException e) {e.printStackTrace();};
+        //return responses.poll();
+    }
+
     public void contact(String request) {
         if (request != null) {
             outgoing.println(request); log.info("message sent");

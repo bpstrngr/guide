@@ -4,7 +4,7 @@
    <string name="hello_world">Hello world!</string>
    <string name="menu_settings">Settings</string>
    <string name="title_activity_main">HelloActivity</string>
-   <string name="edit_message">messagestring</string>
-   <string name="button_send">buttonstring</string>
+   <string name="edit_message">request</string>
+   <string name="button_send">Send</string>
 
 </resources>

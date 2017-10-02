@@ -21,9 +21,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 
-/**
- * GUI session to display network communication
- */
+
 public class Browser extends Application {
     public static final Logger log = Logger.getLogger("Browser");
     public static Stage stage;
@@ -32,7 +30,7 @@ public class Browser extends Application {
     public static ScrollPane conversation = new ScrollPane(history);
     public static HBox console = new HBox();
     public static BorderPane layout = new BorderPane();
-    public Client client = Client.session;
+    public Client client = Client.client;
     public static Stack requests;
 
     public Browser(){
@@ -66,16 +64,16 @@ public class Browser extends Application {
                 event.consume();
             };
             log.info("sending request...");
-            bubble(field.getText(),Pos.CENTER_RIGHT,"#00bcd4","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
+            bubble(field.getText(),false);
             String request = field.getText();
-            try{requests.push(request);}catch(Exception e){e.printStackTrace();};
-            log.info("recieving response...");
-            String response = client.contact(request);
-            bubble(response,Pos.CENTER_LEFT,"D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
+            //try{requests.push(request);}catch(Exception e){e.printStackTrace();};
+            //log.info("recieving response...");
+            //String response = client.contact(request);
+            //bubble(response,Pos.CENTER_LEFT,"D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
             field.setText("");
             field.requestFocus();
         });
-        bubble(client.contact(null),Pos.CENTER_LEFT,"#D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
+        //bubble(client.contact(null),true);
         conversation.setFitToHeight(true);
         history.setStyle("-fx-background-color:#ffffff");
         conversation.setStyle("-fx-focus-color:transparent;-fx-background-color:#ffffff;");
@@ -105,26 +103,23 @@ public class Browser extends Application {
     public void start(Stage browser) throws Exception {
         stage = browser;
         stage.setTitle("Protocol");
-        stage.setOnCloseRequest(event -> {
-            System.exit(1);
-        });
+        stage.setOnCloseRequest(event -> {System.exit(1);});
         drawUI();
         scene = new Scene(layout);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void bubble(String message, Pos position, String color,String shape){
-        Client.log.info("inserting message...");
+    public void bubble(String message, boolean incoming){
+        //session.log.info("inserting message...");
         VBox record = new VBox();
         Label label = new Label(message);
-        label.setStyle("    -fx-shape: \""+shape+"\";-fx-background-color: transparent,"+color+";-fx-background-insets: 0,1;-fx-padding: 5;");
+        label.setStyle("-fx-background-color:transparent,"+(incoming?"#D3D3D3":"#00bcd4")+";-fx-background-insets:0,1;-fx-padding:5;-fx-shape:\"M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z\"");
         label.setWrapText(true);
         label.setFont(new Font("Courier",10));
         record.setMaxWidth(Double.MAX_VALUE);
-        record.setAlignment(position);
+        record.setAlignment(incoming?Pos.CENTER_LEFT:Pos.CENTER_RIGHT);
         record.getChildren().add(label);
         history.getChildren().add(record);
     }
 }
-
