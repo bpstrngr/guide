@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.hello">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+package="org.guide">
    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="26"/>
    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-      <activity android:name=".HelloActivity" android:label="@string/app_name">
+      <activity android:name=".ClientActivity" android:label="@string/app_name">
          <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

@@ -1,4 +1,4 @@
-package org.hello;
+package org.guide;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +10,14 @@ import android.widget.EditText;
 import android.widget.Button;
 import org.joda.time.LocalTime;
 
-public class HelloActivity extends Activity {
+public class ClientActivity extends Activity {
 
-    public static final String EXTRA_MESSAGE = "org.hello.MESSAGE";
+    public static final String EXTRA_MESSAGE = "org.guide.MESSAGE";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
-        setContentView(R.layout.hello_layout);
+        setContentView(R.layout.client_layout);
     }
 
 /*  @Override

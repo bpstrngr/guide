@@ -35,7 +35,7 @@ class Protocol {
      * Response conditions
      * */
     public enum State {
-        VOCATIVE("Knock-knock!", null),
+        VOCATIVE("Hi, how can I help?", null),
         RESPONSIVE(story.name().toLowerCase(), "Who's there?"),
         REACTIVE(story.joke, story.name().toLowerCase() + " who?"),
         SUGGESTIVE("Want another? (y)", null),

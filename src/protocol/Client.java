@@ -27,13 +27,14 @@ public class Client implements Runnable {
     //public static Application browser;
 
     public Client(BufferedReader incoming, PrintWriter outgoing){
-        //terminal()
+        //terminal();
         this.incoming=incoming;
         this.outgoing=outgoing;
         client = this;
         thread = new Thread(this);
         thread.start(); log.info("thread started listening");
         Application.launch(Browser.class); log.info("interface provided");
+        System.out.println(Platform.isAccessibilityActive());
     }
 
     public static void main(String[] args) throws IOException {
@@ -45,7 +46,7 @@ public class Client implements Runnable {
             outgoing = new PrintWriter(socket.getOutputStream(), true);
             incoming = new BufferedReader(new InputStreamReader(socket.getInputStream())); log.info(host + " picked up");
             new Client(incoming,outgoing);
-        } catch (UnknownHostException exception) { System.err.println(host + " is not at home."); System.exit(1);
+        } catch (UnknownHostException exception) { System.err.println(host + " is not online."); System.exit(1);
         } catch (IOException exception) { System.err.println(host + " didn't hear You clearly."); System.exit(1);
         } log.info("connection established");
     }
