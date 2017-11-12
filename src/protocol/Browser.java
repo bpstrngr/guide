@@ -19,30 +19,29 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+//import javax.swing.*;
 
 
 public class Browser extends Application {
     public static final Logger log = Logger.getLogger("Browser");
-    public static Stage stage;
-    public static Scene scene;
-    public static VBox history = new VBox();
-    public static ScrollPane conversation = new ScrollPane(history);
-    public static HBox console = new HBox();
-    public static BorderPane layout = new BorderPane();
-    public Client client = Client.client;
-    public static Stack requests;
+    private Stage stage;
+    private Scene scene;
+    private BorderPane layout = new BorderPane();
+    private HBox console = new HBox();
+    private VBox history = new VBox();
+    private ScrollPane conversation = new ScrollPane(history);
+    private Client client;
 
-    public Browser(){
-        log.info("interface instantiated");
-        client.browser = this;
-    }
-
-    private SVGPath drawSVG(String track){
-        SVGPath path = new SVGPath();
-        path.setContent(track);
-        path.setStyle("-fill:#000000;-hover-fill:#d3d3d3");
-        return path;
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage = stage;
+        stage.setTitle("Guide");
+        stage.setOnCloseRequest(event -> {System.exit(1);});
+        drawUI();
+        scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.show(); log.info("interface instantiated");
+		connect();
     }
 
     private void drawUI(){
@@ -60,16 +59,8 @@ public class Browser extends Application {
         button.setMaxSize(radius*2,radius*2);
         button.setMinSize(radius*2,radius*2);
         button.setOnAction(event -> {
-            if(field.getText() == ""){
-                event.consume();
-            };
-            log.info("sending request...");
-            bubble(field.getText(),false);
-            String request = field.getText();
-            //try{requests.push(request);}catch(Exception e){e.printStackTrace();};
-            //log.info("recieving response...");
-            //String response = client.contact(request);
-            //bubble(response,Pos.CENTER_LEFT,"D3D3D3","M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z");
+            if (field.getText() == "") event.consume(); 
+			client.contact(field.getText());
             field.setText("");
             field.requestFocus();
         });
@@ -78,15 +69,12 @@ public class Browser extends Application {
         history.setStyle("-fx-background-color:#ffffff");
         conversation.setStyle("-fx-focus-color:transparent;-fx-background-color:#ffffff;");
         conversation.setMaxHeight(500.0);
-        conversation.setFitToHeight(true);
+        conversation.setMinHeight(50.0);
+		conversation.setFitToHeight(true);
         conversation.setFitToWidth(true);
-        conversation.addEventFilter(ScrollEvent.SCROLL,event->{
-                if (event.getDeltaX() != 0){
-                    event.consume();
-            }
-        });
+        conversation.addEventFilter( ScrollEvent.SCROLL,event-> {if (event.getDeltaX() != 0) event.consume();});
         console.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
-            if(event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.ENTER) {
                 button.fire();
                 event.consume();
             }
@@ -99,17 +87,20 @@ public class Browser extends Application {
         layout.setStyle("-fx-background-color:#ffffff");
     }
 
-    @Override
-    public void start(Stage browser) throws Exception {
-        stage = browser;
-        stage.setTitle("Protocol");
-        stage.setOnCloseRequest(event -> {System.exit(1);});
-        drawUI();
-        scene = new Scene(layout);
-        stage.setScene(scene);
-        stage.show();
+	private SVGPath drawSVG(String track){
+        SVGPath path = new SVGPath();
+        path.setContent(track);
+        path.setStyle("-fill:#000000;-hover-fill:#d3d3d3");
+        return path;
     }
-
+	
+	private void connect(){
+		client = new Client("bpstrngr","127.0.0.1",4444,this);
+        Thread thread = new Thread(client::listen);
+        thread.setDaemon(true);
+        thread.start();
+	}
+	
     public void bubble(String message, boolean incoming){
         //session.log.info("inserting message...");
         VBox record = new VBox();
