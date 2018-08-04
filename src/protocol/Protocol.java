@@ -1,9 +1,5 @@
 package protocol;
 
-import java.io.*;
-import java.net.*;
-import java.util.Random;
-
 /**
 * Communication rules on a socket.
 * */
@@ -23,7 +19,7 @@ class Protocol {
             this.joke = joke;
         }
         private static Story reset() {
-            return Story.values()[new Random().nextInt(Story.values().length)];
+            return Story.values()[new java.util.Random().nextInt(Story.values().length)];
         }
     }
     public static Story story = Story.reset();

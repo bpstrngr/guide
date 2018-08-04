@@ -9,21 +9,21 @@ import java.util.logging.Level;
 public class Host {
     public static final Logger log = Logger.getLogger(Host.class.getName());
 
-    private static ServerSocket serverSocket = null;
-    private static Socket clientSocket = null;
-    private static PrintWriter outgoing;
-    private static BufferedReader incoming;
+    private static java.net.ServerSocket serverSocket = null;
+    private static java.net.Socket clientSocket = null;
+    private static java.io.PrintWriter outgoing;
+    private static java.io.BufferedReader incoming;
     private static String request, response;
-    private static Deque<String> requests;
+    private static java.util.Deque<String> requests;
     private static Protocol protocol = new Protocol();
 
     public static void main(String[] args) throws IOException {
         try {
-            serverSocket = new ServerSocket(4444);
+            serverSocket = new java.net.ServerSocket(4444);
             clientSocket = serverSocket.accept();
-            outgoing = new PrintWriter(clientSocket.getOutputStream(), true);
-            incoming = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        } catch (IOException e) {
+            outgoing = new java.io.PrintWriter(clientSocket.getOutputStream(), true);
+            incoming = new java.io.BufferedReader(new java.io.InputStreamReader(clientSocket.getInputStream()));
+        } catch (java.io.IOException e) {
             System.err.println("Port 4444 was either blocked or occupied by client.");
             System.exit(1);
         }
@@ -37,7 +37,7 @@ public class Host {
         serverSocket.close();
     }
 
-    public static void communicate() throws IOException {
+    public static void communicate() throws java.io.IOException {
         if (protocol.state.ignorecase == null) {
             response = protocol.processRequest(null);
             outgoing.println(response);
