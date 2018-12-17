@@ -1,0 +1,16 @@
+class Expression
+{public static void main(String[] args)
+{try
+{java.net.ServerSocket port=new java.net.ServerSocket(new Integer(args[0]));
+ java.net.Socket client=port.accept();
+ java.io.PrintWriter outgoing=new java.io.PrintWriter(client.getOutputStream(),true);
+ java.io.BufferedReader incoming=new java.io.BufferedReader(new java.io.InputStreamReader(client.getInputStream()));
+ while(true)
+{if(incoming.readLine()!=null)
+{System.out.println(incoming.readLine());
+ outgoing.println("Damn!")
+};
+}
+}catch(java.io.IOException io){};
+}
+};

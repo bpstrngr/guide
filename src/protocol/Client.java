@@ -1,7 +1,7 @@
 package protocol;
 
 public class Client 
-{public static final java.util.Logger log=java.util.Logger.getLogger(Client.class.getName());
+{//public static final java.util.Logger log=java.util.Logger.getLogger(Client.class.getName());
  private String name;
  private java.net.Socket socket;
  private java.io.PrintWriter outgoing;
@@ -14,7 +14,7 @@ public class Client
  try
 {this.socket=new java.net.Socket(host,port);
  this.incoming=new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
- this.outgoing=new java.io.PrintWriter(socket.getOutputStream(),true);log.info(host + " connected");
+ this.outgoing=new java.io.PrintWriter(socket.getOutputStream(),true); //log.info(host + " connected");
 }catch(java.net.UnknownHostException exception){System.err.println(host+":"+port+" is not online.");System.exit(1);}
  catch(java.io.IOException exception){System.err.println(host+":"+port+" didn't hear You clearly.");System.exit(1);}
  this.browser=browser;
@@ -25,7 +25,7 @@ public class Client
 {String response=incoming.readLine();
  if(response!=null) javafx.application.Platform.runLater(new Runnable()
 {@Override public void run()
-{browser.bubble(response,true); log.info("response received: "+response);
+{browser.bubble(response,true); //log.info("response received: "+response);
 }
 });
 }catch(java.io.IOException fail){fail.printStackTrace();};
@@ -33,7 +33,7 @@ public class Client
 }
  public void contact(String request)
 {if(request!=null)
-{outgoing.println(request);log.info("request sent: "+request);
+{outgoing.println(request); //log.info("request sent: "+request);
  browser.bubble(request,false); 
  if(request.equals("Bye"))System.exit(1);
 }

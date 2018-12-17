@@ -1,0 +1,4 @@
+name: guide
+description: workspace
+dependencies:
+  args: ^1.5.1

@@ -1,0 +1,135 @@
+package protocol;
+
+import java.io.*;
+import java.net.*;
+import java.util.Stack;
+import java.util.logging.Logger;
+import javafx.scene.Scene;
+import javafx.scene.layout.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.Group;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.geometry.Pos;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.BooleanExpression;
+
+public class Browser extends Application {
+    public static final Logger log = Logger.getLogger("Browser");
+    private Stage stage;
+    private Scene scene;
+    private Pane canvas = new Pane();
+    private BorderPane panel = new BorderPane();
+    private StackPane layout = new StackPane(canvas,panel);
+    private HBox console = new HBox();
+    private TextField field = new TextField();
+    //private Button button = new Button();
+    private VBox history = new VBox();
+    private ScrollPane conversation = new ScrollPane(history);
+    private Client client;
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage = stage;
+        stage.setTitle("Guide");
+        stage.setOnCloseRequest(event -> {System.exit(1);});
+        drawUI();
+        scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.show(); log.info("interface instantiated");
+	connect();
+    }
+
+    private void drawUI(){
+        field.setMinWidth(10.0);
+        field.setFont(new Font("Courier",12));
+	field.setAlignment(Pos.CENTER_RIGHT);
+	field.textProperty().addListener(new ChangeListener<String>(){
+	    @Override public void changed(ObservableValue<? extends String> observable, String pastString, String newString){
+		field.setPrefColumnCount(field.getText().length()+1);
+	    }
+	});
+        field.setPromptText("write here");
+        field.setStyle("-fx-background-color:#ffffff;-fx-border-radius:100%;");
+	//HBox.setHgrow(field, Priority.ALWAYS);
+        /*Double radius = 20.0;
+        Group svg = new Group(drawSVG("M50 -8 L-7 -3 L5 7 Z"),drawSVG("M50 -8 L33 9 L6 8 Z"));//pencil: viewBox="0 0 528.899 528.899" "M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981 c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611 C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069 L27.473,390.597L0.3,512.69z"
+        svg.setScaleX(Math.min(20/svg.getBoundsInParent().getWidth(), 20/svg.getBoundsInParent().getHeight()));
+        button.setShape(new Circle(radius));
+        button.setGraphic(svg);
+        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        button.setMaxSize(radius*2,radius*2);
+        button.setMinSize(radius*2,radius*2);
+        button.setOnAction(event -> {
+            if (field.getText() == "") event.consume();
+			client.contact(field.getText());
+            field.setText("");
+            field.requestFocus();
+        });*/
+        console.setAlignment(Pos.CENTER_RIGHT);
+	console.getChildren().addAll(field);
+        console.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
+            if (event.getCode() != KeyCode.ENTER || field.getText() == "") event.consume();
+	    else{
+		client.contact(field.getText());
+            	field.setText("");
+            	field.requestFocus();
+	    }
+        });
+	history.setStyle("-fx-background-color:transparent;");
+        conversation.setVbarPolicy(ScrollBarPolicy.NEVER);
+        conversation.vvalueProperty().bind(history.heightProperty());
+        conversation.addEventFilter(ScrollEvent.SCROLL,event-> {if (event.getDeltaX() != 0) event.consume();});
+        conversation.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {conversation.setFitToHeight(conversation.fitToHeightProperty().getValue()?false:true);});
+        conversation.setStyle("-fx-background:transparent;-fx-background-color:transparent;-fx-fit-to-width:true;-fx-pannable:true");
+        panel.setTop(conversation);
+        panel.setBottom(console);
+	panel.setStyle("-fx-background-color:transparent;");
+	canvas.setPrefWidth(200.0);
+	canvas.setPrefHeight(250.0);
+	canvas.setStyle("-fx-background-color: #000000;");
+    }
+
+    private SVGPath drawSVG(String track){
+        SVGPath path = new SVGPath();
+        path.setContent(track);
+        path.setStyle("-fill:#000000;-hover-fill:#d3d3d3");
+        return path;
+    }
+
+    private void connect(){
+	client = new Client("bpstrngr","127.0.0.1",4444,this);
+        Thread thread = new Thread(client::listen);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    public void bubble(String message, boolean incoming){//session.log.info("inserting message...");
+	Label label = new Label(message);
+	label.setWrapText(true);
+        label.setFont(new Font("Courier",10));
+        label.setStyle("-fx-background-color:"+(incoming?"#D3D3D3":"#00bcd4")+";-fx-text-fill:"+(incoming?"black":"white")+";-fx-background-insets:0,1;-fx-padding:5;-fx-shape:\"M169.6,80H108H80C75.6,80,72,83.6,72,88V132.7C72,137.1,75.6,140.7,80,140.7H169.6C174,140.7,177.6,137.1,177.6,132.7V88C177.6,83.6,174,80,169.6,80Z\"");
+	VBox record = new VBox(label);
+	record.setMaxWidth(Double.MAX_VALUE);
+        record.setAlignment(incoming?Pos.CENTER_LEFT:Pos.CENTER_RIGHT);
+	record.setStyle("-fx-background-color:transparent;");
+        history.getChildren().add(record);
+	history.applyCss();
+	history.layout();
+	//label.setText(Double.toString(record.getBoundsInParent().getHeight()));
+	conversation.setPrefHeight(record.getBoundsInParent().getHeight());
+    }
+}
